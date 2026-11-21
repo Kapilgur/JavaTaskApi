@@ -13,13 +13,10 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/api/v1/tasks")
-
+@RequiredArgsConstructor
 public class TaskController {
     private final TaskService service;
 
-    public TaskController(TaskService service) {
-        this.service = service;
-    }
     @GetMapping
     public Page<TaskResponse> list(@PageableDefault(size = 20, sort = "id") Pageable pageable) {
         return service.list(pageable);
