@@ -11,11 +11,26 @@ Maintain a Spring Boot REST API for tasks, using MySQL in development and H2 onl
 - Flyway owns production schema changes.
 
 ## Hard constraints
-- Every source file must contain at most 50 physical lines.
+- A single `Write` or `Edit` may add at most 50 new lines to a source file (hook-enforced).
+  There is no limit on total file size; split large changes into several smaller edits.
 - Prefer small classes and extracted helpers; do not compress unreadable code to pass the limit.
 - Never edit generated files under `target/`.
 - Never place secrets in source, settings, or commits.
-- Do not commit or push unless explicitly asked.
+- Never modify files on `main`, `master`, `develop`, `release/*`, or `hotfix/*`.
+- Do not commit or push unless I explicitly approve it in this conversation.
+
+## Git workflow (mandatory for any file change)
+Follow `.claude/skills/safe-git-workflow/SKILL.md` for every request that changes files.
+Read-only requests (inspect, explain, review, answer) do not create a branch. In short:
+1. Run `git status --short`, `git branch --show-current`, `git remote -v`.
+2. If unrelated uncommitted changes exist, stop and ask. Never delete, overwrite, or stash them.
+3. Create `feature/`, `fix/`, `refactor/`, `test/`, `docs/`, or `chore/` + short kebab-case name.
+4. Implement only what was asked, then run `./mvnw test` (`.\mvnw.cmd test` on Windows).
+5. Report branch, files changed, summary, test results, git status, proposed commit message,
+   then ask "Would you like me to commit these changes?"
+6. After an approved commit, ask "The changes are committed on <branch-name>. Would you like me
+   to push this branch to origin?" Push only with `git push -u origin <branch-name>`.
+7. Never force-push and never push to a protected branch.
 
 ## Efficient workflow
 1. Read `README.md`, then only the relevant layer and test.

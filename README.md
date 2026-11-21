@@ -1,15 +1,16 @@
 # Java Task REST API with MySQL and Claude Code hooks
 
 A complete learning project using Java 17, Spring Boot, Maven, Spring Data JPA, Flyway, MySQL,
-H2 integration tests, Docker Compose, and project-scoped Claude Code hooks. The hooks enforce a
-maximum of 50 lines per source file so you can practice deterministic controls around an AI agent.
+H2 integration tests, Docker Compose, and project-scoped Claude Code hooks. The hooks limit each
+edit to 50 new source lines and enforce a safe Git workflow (task branches, no force pushes, no
+secret commits) so you can practice deterministic controls around an AI agent.
 
 ## Prerequisites
 
 - JDK 17 or newer: `java -version`
 - Docker Desktop with Compose: `docker compose version`
 - Claude Code if you want to exercise the hooks (the API itself does not need Claude or an API key)
-- Python 3.9+ only for the included hook scripts: `python --version`
+- Python 3.9+ only for the included hook scripts: `python3 --version` (`python --version` on Windows)
 - Git (recommended)
 
 Maven does not need to be installed: the included Maven Wrapper downloads the pinned Maven version.
@@ -100,7 +101,8 @@ See `docs/API.md` for request fields, pagination, status values, and error respo
 
 Open a terminal in this repository and run Claude Code. If your Enterprise login already works, no separate Anthropic API key is required. It reads `CLAUDE.md` for architecture and
 workflow guidance, discovers `.claude/skills/java-rest-api/SKILL.md`, and loads project hooks from
-`.claude/settings.json`. If asked, review and trust the repository hooks.
+`.claude/settings.json`. If asked, review and trust the repository hooks. The
+`safe-git-workflow` skill makes Claude work on a task branch and ask before committing or pushing.
 
 Suggested staged prompts:
 
@@ -108,29 +110,28 @@ Suggested staged prompts:
 2. `Use the java-rest-api skill. Add filtering by task status. Plan first.`
 3. `Run the focused tests, then all tests. Show the result and git diff --stat.`
 
-The 50-line hook forces Claude to split responsibilities instead of creating large classes. The
-Stop hook catches pre-existing or externally created violations. Details and limitations are in
-`docs/HOOKS.md`.
+The line hook limits each `Write`/`Edit` to 50 new source lines, so Claude makes changes in small,
+reviewable steps. Details and limitations are in `docs/HOOKS.md`.
 
 ## 6. Git workflow
 
-```powershell
-git init
-git add .
-git diff --cached
-git commit -m "Create Spring Boot task API with MySQL and Claude hooks"
+Claude follows `.claude/skills/safe-git-workflow/SKILL.md` for every change (see
+`docs/GIT_WORKFLOW.md` for full examples):
+
+```text
+git status --short / git branch --show-current / git remote -v
+git switch -c feature/add-task-search      # never edit main, master, develop, release/*, hotfix/*
+... implement, then ./mvnw test ...
+-> reports branch, files, summary, tests, status, proposed commit message
+-> "Would you like me to commit these changes?"
+git add <files>; git commit -m "feat: add task search"           # only after you approve
+-> "The changes are committed on feature/add-task-search. Would you like me to push ...?"
+git push -u origin feature/add-task-search                       # only after you approve
 ```
 
-Create an empty remote repository, then use its exact URL:
-
-```powershell
-git branch -M main
-git remote add origin <YOUR-REPOSITORY-URL>
-git push -u origin main
-```
-
-Always review `git diff` and test before committing AI-generated changes. Claude Code does not push
-unless you ask it to and grant the required permission.
+Branch prefixes: `feature/`, `fix/`, `refactor/`, `test/`, `docs/`, `chore/`. Hooks block force
+pushes, pushes to protected branches, edits on protected branches, and commits containing
+secret, environment, database, or build files. Merge into `main` through a pull request.
 
 ## Design notes
 
