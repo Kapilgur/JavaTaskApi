@@ -1,5 +1,6 @@
 package com.example.taskapi.service;
 import com.example.taskapi.domain.TaskItem;
+import com.example.taskapi.domain.TaskStatus;
 import com.example.taskapi.dto.*;
 import com.example.taskapi.exception.TaskNotFoundException;
 import com.example.taskapi.repository.TaskRepository;
@@ -16,6 +17,11 @@ public class TaskService {
     @Transactional(readOnly = true)
     public Page<TaskResponse> list(Pageable pageable) {
         return repository.findAll(pageable).map(TaskResponse::from);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<TaskResponse> searchByStatus(TaskStatus status, Pageable pageable) {
+        return repository.findByStatus(status, pageable).map(TaskResponse::from);
     }
 
     @Transactional(readOnly = true)
