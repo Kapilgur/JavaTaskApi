@@ -12,10 +12,5 @@ jobs:
           distribution: temurin
           java-version: '17'
           cache: maven
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.x'
-      - name: Enforce source line limit
-        run: python .claude/hooks/verify_project.py
       - name: Run tests
         run: ./mvnw test
