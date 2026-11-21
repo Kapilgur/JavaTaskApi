@@ -1,0 +1,24 @@
+# Build output
+target/
+.mvn/wrapper/maven-wrapper.jar
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Secrets / local env (keep the template)
+.env
+.env.*
+!.env.example
+
+# Claude Code local overrides
+.claude/settings.local.json
+
+# Python hook caches
+__pycache__/
+*.pyc
+
+# OS / logs
+.DS_Store
+*.log
