@@ -1,5 +1,6 @@
 package com.example.taskapi.controller;
 
+import com.example.taskapi.domain.TaskStatus;
 import com.example.taskapi.dto.*;
 import com.example.taskapi.service.TaskService;
 import jakarta.validation.Valid;
@@ -20,6 +21,12 @@ public class TaskController {
     @GetMapping
     public Page<TaskResponse> list(@PageableDefault(size = 20, sort = "id") Pageable pageable) {
         return service.list(pageable);
+    }
+
+    @GetMapping("/search")
+    public Page<TaskResponse> searchByStatus(@RequestParam TaskStatus status,
+            @PageableDefault(size = 20, sort = "id") Pageable pageable) {
+        return service.searchByStatus(status, pageable);
     }
 
     @GetMapping("/{id}")
