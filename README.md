@@ -1,9 +1,8 @@
 # Java Task REST API with MySQL and Claude Code hooks
 
 A complete learning project using Java 17, Spring Boot, Maven, Spring Data JPA, Flyway, MySQL,
-H2 integration tests, Docker Compose, and project-scoped Claude Code hooks. The hooks limit each
-edit to 50 new source lines and enforce a safe Git workflow (task branches, no force pushes, no
-secret commits) so you can practice deterministic controls around an AI agent.
+H2 integration tests, Docker Compose, and project-scoped Claude Code hooks. The hooks enforce a
+safe Git workflow (task branches, no force pushes, no secret commits) so you can practice deterministic controls around an AI agent.
 
 ## Prerequisites
 
@@ -110,8 +109,8 @@ Suggested staged prompts:
 2. `Use the java-rest-api skill. Add filtering by task status. Plan first.`
 3. `Run the focused tests, then all tests. Show the result and git diff --stat.`
 
-The line hook limits each `Write`/`Edit` to 50 new source lines, so Claude makes changes in small,
-reviewable steps. Details and limitations are in `docs/HOOKS.md`.
+The line hook is disabled (no limit on lines per `Write`/`Edit`). Details and limitations are in
+`docs/HOOKS.md`.
 
 ## 6. Git workflow
 

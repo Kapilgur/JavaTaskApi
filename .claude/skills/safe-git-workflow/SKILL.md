@@ -40,8 +40,6 @@ Names are lowercase kebab-case, short, and describe the request.
 ## 3. Implement
 
 - Make only the changes the request requires; no drive-by edits.
-- Add at most 50 new lines per `Write`/`Edit` of a source file (hook-enforced). Larger
-  changes are split into several smaller edits.
 
 ## 4. Validate
 

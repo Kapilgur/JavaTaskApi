@@ -9,16 +9,16 @@ A hook that exits with code 2 blocks the tool call and its message is returned t
 | Hook script               | Runs before                  | Blocks                                              |
 |---------------------------|------------------------------|-----------------------------------------------------|
 | `guard_protected_edit.py` | `Write`, `Edit`, `NotebookEdit` | any file change while on a protected branch      |
-| `limit_code_lines.py`     | `Write`, `Edit`              | adding more than 50 new source lines in one operation |
+| `limit_code_lines.py`     | `Write`, `Edit`              | nothing (disabled: `LIMIT = None`, unlimited lines) |
 | `guard_bash.py`           | `Bash`                       | force pushes, pushes to protected branches, secret commits, shell edits on protected branches |
 
 Protected branches: `main`, `master`, `develop`, `release/*`, `hotfix/*`.
 
 ### `limit_code_lines.py`
-Diffs the file before and after the operation and counts only **newly added or replaced**
-lines. A 51-line new file is blocked; adding 20 lines to a 300-line file is allowed. There is
-no limit on total file size. Only source suffixes (`.java`, `.py`, `.ts`, ...) are counted;
-Markdown, XML, YAML, JSON, and SQL are not. Change `LIMIT` to use another threshold.
+Currently **disabled**: `LIMIT = None`, so every `Write`/`Edit` is allowed regardless of size.
+To re-enable, set `LIMIT` to an integer (e.g. `50`). When enabled, it diffs the file before and
+after the operation and counts only **newly added or replaced** lines of source files
+(`.java`, `.py`, `.ts`, ...); Markdown, XML, YAML, JSON, and SQL are not counted.
 
 ### `guard_bash.py`
 Parses the command (respecting quotes, `&&`, `;`, `|`, `cd`, and `git -C`) and blocks:

@@ -7,7 +7,7 @@ description: Safely extend this Spring Boot task API while preserving its layeri
 
 1. Follow the `safe-git-workflow` skill: work on a task branch, never on a protected branch.
 2. Read `CLAUDE.md` and only the files for the layer being changed.
-3. Keep classes small; add at most 50 new lines per `Write`/`Edit` (hook-enforced).
+3. Keep classes small and focused.
 4. Preserve Controller -> Service -> Repository -> MySQL separation.
 5. Add or update a focused integration test for behavior changes.
 6. Run `./mvnw test` (`mvnw.cmd test` on Windows).

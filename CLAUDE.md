@@ -11,9 +11,8 @@ Maintain a Spring Boot REST API for tasks, using MySQL in development and H2 onl
 - Flyway owns production schema changes.
 
 ## Hard constraints
-- A single `Write` or `Edit` may add at most 50 new lines to a source file (hook-enforced).
-  There is no limit on total file size; split large changes into several smaller edits.
-- Prefer small classes and extracted helpers; do not compress unreadable code to pass the limit.
+- There is no limit on lines added per `Write` or `Edit` (the line hook is disabled).
+- Prefer small classes and extracted helpers.
 - Never edit generated files under `target/`.
 - Never place secrets in source, settings, or commits.
 - Never modify files on `main`, `master`, `develop`, `release/*`, or `hotfix/*`.
