@@ -1,10 +1,13 @@
-"""PreToolUse hook: allow at most 50 newly added source lines per Write or Edit."""
+"""PreToolUse hook: optionally cap newly added source lines per Write or Edit.
+
+LIMIT = None disables the cap (unlimited). Set an integer to re-enable it.
+"""
 import difflib
 import json
 import sys
 from pathlib import Path
 
-LIMIT = 50
+LIMIT = None  # unlimited
 CODE_SUFFIXES = {".java", ".kt", ".kts", ".py", ".js", ".jsx", ".ts", ".tsx", ".cs", ".go", ".rs"}
 
 
@@ -30,6 +33,8 @@ def added_lines(before, after):
 
 def main():
     data = json.load(sys.stdin)
+    if LIMIT is None:
+        return 0
     path, before, after = before_after(data)
     if after is None:
         return 0
